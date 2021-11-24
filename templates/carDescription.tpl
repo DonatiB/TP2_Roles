@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       
-        {if $log}
+        {if $admin == 3}
           <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="visitHome">Home</a>
           </li>  
@@ -19,7 +19,7 @@
               <a class="nav-link active" aria-current="page" href="{BASE_URL}">Home</a>
           </li>
         {/if} 
-       {if $log}
+       {if $admin == 3}
           <li class="nav-item">
             {foreach from=$carDescription item=$car}
                 <a class="nav-link active" aria-current="page" href="visitCars/{$car->brand}">{$car->brand}</a>

@@ -9,14 +9,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {if $log}
+            {if $admin == 3}
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="visitHome">Home</a>
                 </li>  
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="visitAllCars">All Cars</a>
                 </li> 
-            {else}
+            {else if $admin == 1 || $admin == 0}
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{BASE_URL}">Home</a>
                 </li>
@@ -26,7 +26,7 @@
             {/if}   
         </ul>
         </div>
-        {if !$log}
+        {if $admin == 1 || $admin == 0}
             <div class="d-flex">
                 <a href="logout"><button class="btn btn-danger" type="submit">Sign off</button></a>
             </div>
@@ -34,7 +34,7 @@
     </div>
 </nav>
 
-{if $log}
+{if $admin == 3 || $admin == 0}
     <div class="card-brands">
         {foreach from=$allBrands item=$brand}                           
             <div class="card" style="width: 18rem;">   
@@ -42,11 +42,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{$brand->brand}</h5>
                     <p class="card-text">{$brand->description}</p> 
-                    {if $log}                           
+                    {if $admin == 3}                           
                         <a href="visitCars/{$brand->brand}" class="btn btn-primary">Go Cars</a>
                     {/if} 
+                    {if $admin == 0}                           
+                        <a href="brand/{$brand->brand}" class="btn btn-primary">Go Cars</a>
+                    {/if} 
                     {*Antes de eliminar la marca, elimino los autos de esa marca*}
-                    {if !$log}
+                    {if $admin == 1}
                         {foreach from=$allBrandsAndCar item=$brands} 
                             {if $brand->brand == $brands->brand || !$brands->car}
                                 <a href="deleteBrand/{$brand->brand}/{$brands->car}" class="btn btn-danger">Delete</a>
@@ -57,7 +60,7 @@
             </div>
         {/foreach}
     </div>  
-{else}
+{else if $admin == 1}
     <div class="container">   
         <div class="forms">
             <div class="form-car">
@@ -129,6 +132,7 @@
                 </form>    
             </div>
         </div> 
+        
         <div class="card-brands">
             {foreach from=$allBrands item=$brand}                           
                 <div class="card" style="width: 18rem;">   
@@ -138,15 +142,18 @@
                         <p class="card-text">{$brand->description}</p>                            
                         <a href="brand/{$brand->brand}" class="btn btn-primary">Go Cars</a>
                         {*Antes de eliminar la marca, elimino los autos de esa marca*}
+                    
                         {foreach from=$allBrandsAndCar item=$brands} 
                             {if $brand->brand == $brands->brand || !$brands->car}
                                 <a href="deleteBrand/{$brand->brand}/{$brands->car}" class="btn btn-danger">Delete</a>
                             {/if}
                         {/foreach}
+                        
                     </div>
                 </div>
             {/foreach}
         </div> 
+       
     </div>
 {/if}
 

@@ -26,21 +26,21 @@ class CarsView{
         $this->smarty->display('templates/allCars.tpl'); 
     }
 
-    function carsByBrand($carsBrand, $brandTitle, $carsImg, $log){
+    function carsByBrand($carsBrand, $brandTitle, $carsImg, $admin){
         foreach($carsImg as $images){
             $images->image = base64_encode($images->image);
         }  
         $this->smarty->assign('title', $brandTitle);
         $this->smarty->assign('carsBrand', $carsBrand);
         $this->smarty->assign('carsImg', $carsImg);
-        $this->smarty->assign('log', $log);
+        $this->smarty->assign('admin', $admin);
         $this->smarty->display('templates/carsBrand.tpl');
     }
 
-    function viewDescription($carDescription, $carsImg, $log){
+    function viewDescription($carDescription, $carsImg, $admin){
         $this->smarty->assign('carDescription', $carDescription);
         $this->smarty->assign('carsImg', $carsImg);
-        $this->smarty->assign('log', $log);
+        $this->smarty->assign('admin', $admin);
         $this->smarty->display('templates/carDescription.tpl');
     }
 }

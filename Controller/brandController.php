@@ -17,32 +17,28 @@ class BrandController{
     }
 
     function home(){
-        $this->authHelper->checkLoggedIn();
-        $allBrands = $this->model->getBrands();
-        $allBrandsAndCar = $this->model->getBrandsAndCar();
-        $brandsLogo= $this->model->getBrandsLogo();
-        $allCars = $this->model->getAllCars();
-        $this->view->viewHome($allBrands, $brandsLogo, $allCars, $allBrandsAndCar, null);
-    }
+        $admin =  $this->authHelper->checkLoggedIn();
 
-    //siempre va a ser true (queria intentarlo con otra tabla que tuviera los roless)
-    function log(){  
-        $log = true; 
-        return $log;
-    }
+        // var_dump(!$admin);
+        // die();
 
-    function homeVisit(){
-        $log = $this->log();
-        $allBrands = $this->model->getBrands();
-        $allBrandsAndCar = $this->model->getBrandsAndCar();
-        $brandsLogo= $this->model->getBrandsLogo();
-        $allCars = $this->model->getAllCars();
-        $this->view->viewHome($allBrands, $brandsLogo, $allCars, $allBrandsAndCar,$log);
+        if($admin == 1){
+            $allBrands = $this->model->getBrands();
+            $allBrandsAndCar = $this->model->getBrandsAndCar();
+            $brandsLogo= $this->model->getBrandsLogo();
+            $allCars = $this->model->getAllCars();
+            $this->view->viewHome($allBrands, $brandsLogo, $allCars, $allBrandsAndCar, $admin);
+        }else if($admin == 0){
+            $allBrands = $this->model->getBrands();
+            $allBrandsAndCar = $this->model->getBrandsAndCar();
+            $brandsLogo= $this->model->getBrandsLogo();
+            $allCars = $this->model->getAllCars();
+            $this->view->viewHome($allBrands, $brandsLogo, $allCars, $allBrandsAndCar, $admin);
+        }
     }
-
     
     function createBrand(){
-
+        $this->authHelper->checkAdmin();
         if(isset($_FILES['photo'])){
             //retenemos toda la informacion
             $typeFile = $_FILES['photo']['type'];
@@ -71,17 +67,34 @@ class BrandController{
     }
 
     function deleteBrand($brand, $car){
+        $this->authHelper->checkAdmin();
         $this->model->deleteBrandDB($brand, $car);    
         $this->view->viewHomeLocation();
     }
 
     function modifiedName(){ 
+        $this->authHelper->checkAdmin();
         if(!empty($_POST['newName'] && $_POST['nameModified']) && isset($_POST['newName'], $_POST['nameModified'])){       
             $newName = $_POST['newName'];
             $nameModified = $_POST['nameModified'];    
         }
         $this->model->modifiedNameDB($newName, $nameModified);
         $this->view->viewHomeLocation();
+    }
+
+    //siempre va a ser true (queria intentarlo con otra tabla que tuviera los roless)
+    function log(){  
+        $log = 3; 
+        return $log;
+    }
+
+    function homeVisit(){
+        $log = $this->log();
+        $allBrands = $this->model->getBrands();
+        $allBrandsAndCar = $this->model->getBrandsAndCar();
+        $brandsLogo= $this->model->getBrandsLogo();
+        $allCars = $this->model->getAllCars();
+        $this->view->viewHome($allBrands, $brandsLogo, $allCars, $allBrandsAndCar, $log);
     }
 
     

@@ -46,11 +46,18 @@ class LoginController{
 
             //obtenemos el usuario de la base de datos
             $user = $this->model->getUser($email);
+
+            if($user->admin == 1){
+                $admin = 1;
+            }else{
+                $admin = 0;
+            }
             
             //si el usuario existe y las contraseñas coinciden
             if($user && password_verify($password, $user->password)){
                 session_start();
                 $_SESSION['email'] = $email;
+                $_SESSION['admin'] = $admin;
 
                 $this->view->showHome();
             }else{
